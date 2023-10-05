@@ -21,6 +21,7 @@ public class CustomUser {
     private String fileType;
 
     @Lob
+    @Column(length = 20000000)
     private byte[] data;
 
     public CustomUser(String fileName, String fileType, byte[] data) {

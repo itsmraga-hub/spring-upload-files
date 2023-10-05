@@ -28,16 +28,20 @@ public class StorageServiceImpl implements StorageService {
             if (fileName.contains("..")) {
                 throw new Exception("Filename contains invalid path");
             }
-            log.info("Length: ", multipartFile.getBytes().length);
-           /* if (multipartFile.getBytes().length > (1024 * 1024)) {
-                throw new Exception("File size exceeds maximum limit.");
-            }*/
             CustomUser customUser = new CustomUser(fileName, multipartFile.getContentType(), multipartFile.getBytes());
-            return customUserRepository.save(customUser);
+            System.out.println(customUser);
+            log.info("Length: ", multipartFile.getBytes().length);
+            System.out.println(multipartFile.getBytes().length);
+            if (multipartFile.getBytes().length > (2048 * 2048)) {
+                throw new Exception("File size exceeds maximum limit.");
+            }
+//            CustomUser customUser = new CustomUser(fileName, multipartFile.getContentType(), multipartFile.getBytes());
+            customUserRepository.save(customUser);
+            return customUser;
         } catch (MaxUploadSizeExceededException e) {
             throw new MaxUploadSizeExceededException(multipartFile.getSize());
         } catch (Exception e) {
-//            log.info("Error: ", e);
+            log.info("Error: ", e);
             throw new Exception("Could not save file: " + fileName);
         }
     }
